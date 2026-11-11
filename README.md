@@ -179,33 +179,11 @@ Code walkthrough for reviewers: [`docs/CODE_WALKTHROUGH.md`](docs/CODE_WALKTHROU
 - **Warn at Rp 200** (trace) and **hard stop at Rp 250 → handoff**, checked before every LLM call. The UI meter turns amber and then red. Typical conversation in the demo: about Rp 15–25 projected.
 - To demo the cap, set `[cost] cap_idr = 20` in `config.toml` and restart.
 
-## 9. Config and the H+2 change
+## 9. Config
 
 Rules, prices, thresholds, limits and handoff rules live in **`config.toml`**; provider settings live in `.env`. How to change each rule, with examples and verification steps: **[`docs/CONFIG_GUIDE.md`](docs/CONFIG_GUIDE.md)**. That guide includes a full **Paket Darurat** adjustment section.
 
-### Dampak update constraint
-*(To be filled when the H+2 business-condition change arrives: what changed, why, where it was changed, effect on the customer and the deliverables, trade-off. Template in CONFIG_GUIDE §1.5.)*
-
-## 10. Roadmap / Deferred features
-
-Every deferred item has a `TODO[DEFERRED-<ID>]` placeholder at its call site. Each placeholder is a no-op that writes `deferred: … skipped` to the trace.
-
-| ID | Feature | Why deferred | Hook location | Effort |
-|---|---|---|---|---|
-| DEF-01 | Circuit breaker per endpoint | Not demo-visible; retry limits bound failures | `core/esb_adapter.py → circuit_breaker_allow()` | 2 h |
-| DEF-02 | Async reconciliation of PENDING_VERIFICATION | Needs a background job; lock kept + handoff | `core/transactions.py → execute_purchase()` | 3 h |
-| DEF-03 | Retention purge (trace 30 d, keys/txn 24 h) | In-memory only | `core/trace.py → log()` | 1 h |
-| DEF-04 | x-signature verification + full status catalogue | Demo uses a subset | `mock_esb/server.py → check_api_key()`, `core/esb_adapter.py → STATUS_MEANING` | 2 h |
-| DEF-05 | Handoff after 2 consecutive misunderstandings | Needs a reliable signal | `core/guardrails.py → extra_handoff_checks()` | 2 h |
-| DEF-06 | Handoff for priority segment | No persona needs it | `core/guardrails.py → extra_handoff_checks()` | 0.5 h |
-| DEF-07 | Real human-agent queue | No agent desktop in prototype | `core/guardrails.py → do_handoff()` | 4 h+ |
-| DEF-08 | Live hosting | Local demo | README only | 1 h |
-| DEF-09 | UI polish / responsive | Reliability first | README only | 3 h |
-| DEF-10 | Persist consent via ESB | No consent-write endpoint in the contract | `core/guardrails.py → record_consent()` | 1 h |
-| DEF-11 | LLM-based sentiment / injection classifier | Keywords are deterministic and testable | `core/guardrails.py → screen_message()` | 2 h |
-| DEF-12 | Mock "key in progress" 409 path | Avoided by design (result stored before delay) | `mock_esb/server.py → check_idempotency()` | 1 h |
-
-## 11. Tests
+## 10. Tests
 
 ```bash
 python -m pytest -q
@@ -216,7 +194,7 @@ python -m pytest -q
 - `tests/test_guardrails.py`: human request, injection filter, whitelist, cost cap, consent refusal, ticket refusal, masking, no raw MSISDN in the trace.
 - `tests/test_paket_darurat.py`: flat/percent fee, limit, on/off switch, P5 not eligible. Values are read from config.
 
-## 12. AI assistance disclosure
+## 11. AI assistance disclosure
 
 AI tool used: **Claude (Anthropic)**, via Claude Code. Detailed log: [`docs/AI_ASSISTANCE_LOG.md`](docs/AI_ASSISTANCE_LOG.md).
 
@@ -234,11 +212,11 @@ AI tool used: **Claude (Anthropic)**, via Claude Code. Detailed log: [`docs/AI_A
 
 > *Statement (to be confirmed by the author before submission):* I have reviewed every file and can explain every line of code and every design decision in this repository.
 
-## 13. Data statement
+## 12. Data statement
 
 All customer data, MSISDNs, names, cells, offers, incident references, API keys and secrets in this repository are **fictitious dummy values**. No real customer data, Telkomsel code, credentials, internal endpoints or internal documents were used.
 
-## 14. Known limitations
+## 13. Known limitations
 
 - The Gemini and Azure paths were written to their documented Chat Completions formats but were **not run in the build environment** (no network/key there); all automated tests use the mock LLM. Verify the Gemini path on your machine before recording.
 - In-memory state: restarting clears sessions, the trace and mock data. No persistence, no retention purge (DEF-03).
