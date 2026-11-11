@@ -1,0 +1,48 @@
+<!--
+File: static/index.html
+Purpose: Chat UI page: persona login, chat with cards and buttons, trace panel, cost meter.
+D2 component: Chat UI (§2.2)
+Depends on: static/app.js, static/style.css
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asisten Kuota — Prototype</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Asisten Kuota <span class="tag">prototype · dummy data</span></div>
+    <div class="controls">
+      <label for="persona">Login sebagai</label>
+      <select id="persona"></select>
+      <button id="start" class="primary">Mulai sesi</button>
+      <button id="reset" class="ghost" title="Reset semua sesi dan data mock ESB">Reset demo</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="chat-panel">
+      <div id="chat" class="chat"><div class="hint">Pilih persona lalu tekan <b>Mulai sesi</b>.</div></div>
+      <form id="composer" class="composer">
+        <input id="message" autocomplete="off" placeholder="Tulis pesan, mis. &quot;Kuota saya habis&quot;" disabled>
+        <button id="send" class="primary" disabled>Kirim</button>
+      </form>
+    </section>
+
+    <aside class="trace-panel">
+      <div class="trace-head">
+        <div><b>Trace</b> <span id="provider" class="muted"></span></div>
+        <div class="cost">
+          <div class="cost-label">Biaya LLM (proyeksi produksi): <b id="cost-value">Rp 0</b> <span id="cost-actual" class="muted"></span></div>
+          <div class="meter"><div id="cost-bar" class="meter-fill"></div><div id="cost-warn" class="meter-mark"></div></div>
+        </div>
+      </div>
+      <div id="trace" class="trace"></div>
+    </aside>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

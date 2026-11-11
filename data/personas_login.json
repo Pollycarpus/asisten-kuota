@@ -1,0 +1,10 @@
+{
+  "_comment": "Simulated MyTelkomsel login (session identity) + device location reported by the app. Dummy data only. The backend never reads ESB data from here.",
+  "personas": [
+    {"persona_id": "P1", "label": "P1 - Kuota habis (happy path)", "msisdn": "6281200000001", "device_cell_id": "CELL-JKT-0101"},
+    {"persona_id": "P2", "label": "P2 - Internet lambat (FUP)", "msisdn": "6281200000002", "device_cell_id": "CELL-JKT-0102"},
+    {"persona_id": "P3", "label": "P3 - Pulsa kurang (Paket Darurat)", "msisdn": "6281200000003", "device_cell_id": "CELL-JKT-0103"},
+    {"persona_id": "P4", "label": "P4 - Gangguan jaringan", "msisdn": "6281200000004", "device_cell_id": "CELL-JKT-0204"},
+    {"persona_id": "P5", "label": "P5 - Belum consent + timeout", "msisdn": "6281200000005", "device_cell_id": "CELL-JKT-0105"}
+  ]
+}

@@ -1,0 +1,125 @@
+# =====================================================================
+# File: config.toml
+# Purpose: ALL business rules, thresholds, timeouts and limits for the
+#          Asisten Kuota prototype. Change rules here, not in code
+#          (AD-8, ready for the H+2 constraint update).
+# LLM provider settings and secrets live in .env, not here.
+# Adjustment guide: docs/CONFIG_GUIDE.md
+# =====================================================================
+
+[pilot]
+region = "Jabodetabek"            # dummy pilot region (one region, §1.1)
+channel = "zz"                    # ESB channel code sent in every envelope (§2.5)
+
+# ---------------------------------------------------------------------
+# ESB integration (§2.5 – §2.7)
+# ---------------------------------------------------------------------
+[esb]
+base_url = "http://localhost:8001/esb"   # point to a real ESB later: no code change
+api_key = "dummy-api-key"                # dummy value, never a real credential
+# Real ESB convention is "api_key". The Werkzeug dev server drops header names with
+# underscores (anti-spoofing), so the mock uses "api-key". Change here for a real ESB.
+api_key_header = "api-key"
+secret = "dummy-secret"                  # used only for x-signature (dummy)
+
+[esb.timeouts_s]                  # per-endpoint client timeout (§2.6)
+profile = 1.5
+quota = 1.5
+offers = 2.0
+purchase = 5.0
+loan = 2.0
+network = 2.0
+ticket = 5.0
+
+[esb.retry]                       # §2.7: retry ONLY transient errors
+read_max_retries = 2
+read_backoff_s = [0.3, 0.9]       # exponential backoff for reads
+jitter_ratio = 0.3                # ±30% jitter on read backoff
+write_max_retries = 2             # purchase / ticket: SAME Idempotency-Key
+write_backoff_s = [1.0, 2.0]
+
+# ---------------------------------------------------------------------
+# Mock ESB behaviour (simulation only)
+# ---------------------------------------------------------------------
+[mock_esb]
+quota_latency_ms = [200, 800]     # brief: /quota response time 200–800 ms
+purchase_timeout_delay_s = 6.0    # fault "purchase_timeout_once": must be > esb.timeouts_s.purchase
+
+# Simulated provider eligibility rules for Paket Darurat.
+# These stand in for the real loan system behind the ESB.
+[mock_esb.loan_rules]
+min_tenure_days = 90              # customer must have been active at least this long
+min_avg_monthly_topup_idr = 20000 # average monthly top-up must reach this
+block_if_outstanding_loan = true  # an unpaid Paket Darurat blocks a new one
+limit_idr = 20000                 # maximum loan amount (package price must be <= this)
+fee_type = "flat"                 # "flat" or "percent"
+fee_flat_idr = 2500               # used when fee_type = "flat"
+fee_percent = 10                  # used when fee_type = "percent" (of package price)
+repayment_text = "Dipotong otomatis saat isi ulang pulsa berikutnya"
+
+# ---------------------------------------------------------------------
+# Paket Darurat: what Asisten Kuota is ALLOWED to do (agent policy, UC4)
+# Fixed in code on purpose (not configurable): fee always shown on the
+# confirmation card, button confirmation always required, never auto-buy.
+# ---------------------------------------------------------------------
+[paket_darurat]
+enabled = true                        # false = never offered; suggest cheaper package / top-up
+offer_when_pulsa_below_price = true   # trigger: package price > current pulsa
+max_offer_price_idr = 25000           # never offer a loan for packages above this price
+allowed_categories = ["internet", "darurat"]
+max_loans_per_conversation = 1
+topup_link = "https://example.invalid/isi-pulsa"   # dummy top-up link for the fallback
+
+# ---------------------------------------------------------------------
+# Diagnosis rules engine + offer ranking (AD-3, UC1, UC2)
+# ---------------------------------------------------------------------
+[diagnosis]
+quota_exhausted_mb = 100          # internet remaining <= this => QUOTA_EXHAUSTED
+top_n_offers = 3                  # LLM may only pick from this many offers (whitelist)
+
+[diagnosis.preferred_categories]  # which offer categories fit each diagnosis
+QUOTA_EXHAUSTED = ["internet"]
+FUP_THROTTLED = ["booster"]
+NO_ISSUE = ["internet"]
+NETWORK_DEGRADED = []             # upsell suppressed
+
+# ---------------------------------------------------------------------
+# Agent orchestrator
+# ---------------------------------------------------------------------
+[agent]
+max_history_messages = 16         # history trimming (SIMPLIFIED)
+confirmation_ttl_s = 300          # confirmation_id expires after 5 minutes
+llm_rate_limit_backoff_s = 3.0    # 429: wait once, then fallback + handoff offer
+
+# ---------------------------------------------------------------------
+# Cost guard (§2.9). Token prices + FX are in .env (§2.11).
+# ---------------------------------------------------------------------
+[cost]
+warn_idr = 200                    # warn in trace at this projected cost
+cap_idr = 250                     # hard stop -> handoff (§1.4)
+
+# ---------------------------------------------------------------------
+# Handoff rules (§2.10, SIMPLIFIED: deterministic keywords + system events)
+# ---------------------------------------------------------------------
+[handoff]
+# matched as whole words, case-insensitive
+human_keywords = ["agen", "manusia", "orang asli", "cs", "customer service", "petugas", "call center"]
+anger_keywords = ["bodoh", "goblok", "payah", "parah banget", "kecewa berat", "brengsek", "tidak becus", "nggak becus", "gak becus", "sialan", "penipu", "muak"]
+anger_exclamation_run = 3         # "!!!" counts as anger
+deescalations_before_handoff = 1  # de-escalate once, then hand off
+ticket_failures_before_handoff = 2
+sla_text = "Petugas kami akan menghubungi Anda dalam 15 menit (jam operasional)."
+
+# ---------------------------------------------------------------------
+# Basic prompt-injection / topic filter (SIMPLIFIED)
+# ---------------------------------------------------------------------
+[guardrails]
+injection_patterns = ["ignore (all )?previous", "abaikan (semua )?instruksi", "system prompt", "you are now", "kamu sekarang adalah", "developer mode", "jailbreak"]
+
+# ---------------------------------------------------------------------
+# Privacy / UU PDP (§2.8)
+# ---------------------------------------------------------------------
+[privacy]
+trace_retention_days = 30         # documented; purge job is DEF-03
+transaction_ttl_hours = 24        # documented; purge job is DEF-03
+msisdn_hash_salt = "dummy-salt"   # dummy salt for hashed MSISDN in the transaction store

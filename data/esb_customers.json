@@ -1,0 +1,114 @@
+{
+  "_comment": "Mock ESB seed data. ALL values are fictitious. Loaded only by mock_esb/server.py.",
+  "customers": {
+    "6281200000001": {
+      "persona_id": "P1",
+      "profile": {
+        "name": "TKN-7F3A91",
+        "display_name": "Budi S***",
+        "segment": "REGULAR",
+        "region": "Jabodetabek",
+        "consent": {"ai_assistant": true, "granted_at": "2026-10-01T09:00:00+07:00", "version": "v1"}
+      },
+      "quota": {"items": [{"type": "internet", "remaining_mb": 0, "total_mb": 15360, "expiry": "2026-11-20"}]},
+      "fup": {"status": "NORMAL", "speed_kbps": null},
+      "balance": {"pulsa_idr": 75000},
+      "offers": [
+        {"offer_id": "BID-1003", "name": "Internet 3GB", "quota_mb": 3072, "validity_days": 3, "price_idr": 15000, "category": "internet"},
+        {"offer_id": "BID-1001", "name": "Internet 5GB", "quota_mb": 5120, "validity_days": 7, "price_idr": 25000, "category": "internet"},
+        {"offer_id": "BID-1002", "name": "Internet 15GB", "quota_mb": 15360, "validity_days": 30, "price_idr": 65000, "category": "internet"},
+        {"offer_id": "BID-2001", "name": "Booster Kecepatan 2GB", "quota_mb": 2048, "validity_days": 1, "price_idr": 10000, "category": "booster"}
+      ],
+      "loan_profile": {"tenure_days": 900, "avg_monthly_topup_idr": 100000, "has_outstanding_loan": false},
+      "faults": []
+    },
+    "6281200000002": {
+      "persona_id": "P2",
+      "profile": {
+        "name": "TKN-2B8C44",
+        "display_name": "Sari W***",
+        "segment": "REGULAR",
+        "region": "Jabodetabek",
+        "consent": {"ai_assistant": true, "granted_at": "2026-10-03T10:15:00+07:00", "version": "v1"}
+      },
+      "quota": {"items": [{"type": "internet", "remaining_mb": 8200, "total_mb": 30720, "expiry": "2026-11-28"}]},
+      "fup": {"status": "THROTTLED", "speed_kbps": 256},
+      "balance": {"pulsa_idr": 50000},
+      "offers": [
+        {"offer_id": "BID-2001", "name": "Booster Kecepatan 2GB", "quota_mb": 2048, "validity_days": 1, "price_idr": 10000, "category": "booster"},
+        {"offer_id": "BID-2002", "name": "Booster Kecepatan 5GB", "quota_mb": 5120, "validity_days": 3, "price_idr": 20000, "category": "booster"},
+        {"offer_id": "BID-1001", "name": "Internet 5GB", "quota_mb": 5120, "validity_days": 7, "price_idr": 25000, "category": "internet"},
+        {"offer_id": "BID-1002", "name": "Internet 15GB", "quota_mb": 15360, "validity_days": 30, "price_idr": 65000, "category": "internet"}
+      ],
+      "loan_profile": {"tenure_days": 620, "avg_monthly_topup_idr": 80000, "has_outstanding_loan": false},
+      "faults": []
+    },
+    "6281200000003": {
+      "persona_id": "P3",
+      "profile": {
+        "name": "TKN-9D1E07",
+        "display_name": "Andi P***",
+        "segment": "REGULAR",
+        "region": "Jabodetabek",
+        "consent": {"ai_assistant": true, "granted_at": "2026-09-20T08:30:00+07:00", "version": "v1"}
+      },
+      "quota": {"items": [{"type": "internet", "remaining_mb": 0, "total_mb": 5120, "expiry": "2026-11-15"}]},
+      "fup": {"status": "NORMAL", "speed_kbps": null},
+      "balance": {"pulsa_idr": 2000},
+      "offers": [
+        {"offer_id": "BID-1004", "name": "Internet 1GB", "quota_mb": 1024, "validity_days": 1, "price_idr": 8000, "category": "internet"},
+        {"offer_id": "BID-1003", "name": "Internet 3GB", "quota_mb": 3072, "validity_days": 3, "price_idr": 15000, "category": "internet"},
+        {"offer_id": "BID-1001", "name": "Internet 5GB", "quota_mb": 5120, "validity_days": 7, "price_idr": 25000, "category": "internet"}
+      ],
+      "loan_profile": {"tenure_days": 400, "avg_monthly_topup_idr": 50000, "has_outstanding_loan": false},
+      "faults": []
+    },
+    "6281200000004": {
+      "persona_id": "P4",
+      "profile": {
+        "name": "TKN-4C6F28",
+        "display_name": "Rina K***",
+        "segment": "REGULAR",
+        "region": "Jabodetabek",
+        "consent": {"ai_assistant": true, "granted_at": "2026-10-10T19:45:00+07:00", "version": "v1"}
+      },
+      "quota": {"items": [{"type": "internet", "remaining_mb": 12000, "total_mb": 30720, "expiry": "2026-12-01"}]},
+      "fup": {"status": "NORMAL", "speed_kbps": null},
+      "balance": {"pulsa_idr": 40000},
+      "offers": [
+        {"offer_id": "BID-1001", "name": "Internet 5GB", "quota_mb": 5120, "validity_days": 7, "price_idr": 25000, "category": "internet"},
+        {"offer_id": "BID-1002", "name": "Internet 15GB", "quota_mb": 15360, "validity_days": 30, "price_idr": 65000, "category": "internet"},
+        {"offer_id": "BID-2001", "name": "Booster Kecepatan 2GB", "quota_mb": 2048, "validity_days": 1, "price_idr": 10000, "category": "booster"}
+      ],
+      "loan_profile": {"tenure_days": 1200, "avg_monthly_topup_idr": 90000, "has_outstanding_loan": false},
+      "faults": []
+    },
+    "6281200000005": {
+      "persona_id": "P5",
+      "profile": {
+        "name": "TKN-6A0B53",
+        "display_name": "Dewi L***",
+        "segment": "REGULAR",
+        "region": "Jabodetabek",
+        "consent": {"ai_assistant": null, "granted_at": null, "version": null}
+      },
+      "quota": {"items": [{"type": "internet", "remaining_mb": 0, "total_mb": 10240, "expiry": "2026-11-18"}]},
+      "fup": {"status": "NORMAL", "speed_kbps": null},
+      "balance": {"pulsa_idr": 12000},
+      "offers": [
+        {"offer_id": "BID-1005", "name": "Internet 2GB", "quota_mb": 2048, "validity_days": 2, "price_idr": 10000, "category": "internet"},
+        {"offer_id": "BID-1001", "name": "Internet 5GB", "quota_mb": 5120, "validity_days": 7, "price_idr": 25000, "category": "internet"},
+        {"offer_id": "BID-1002", "name": "Internet 15GB", "quota_mb": 15360, "validity_days": 30, "price_idr": 65000, "category": "internet"}
+      ],
+      "loan_profile": {"tenure_days": 30, "avg_monthly_topup_idr": 15000, "has_outstanding_loan": true},
+      "faults": ["purchase_timeout_once"]
+    }
+  },
+  "cells": {
+    "CELL-JKT-0101": {"status": "normal", "incident_ref": null},
+    "CELL-JKT-0102": {"status": "normal", "incident_ref": null},
+    "CELL-JKT-0103": {"status": "normal", "incident_ref": null},
+    "CELL-JKT-0204": {"status": "degraded", "incident_ref": "INC-20261113-0042"},
+    "CELL-JKT-0105": {"status": "normal", "incident_ref": null}
+  }
+}
